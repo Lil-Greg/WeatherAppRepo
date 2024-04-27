@@ -4,9 +4,10 @@ import { SearchBar } from './components/SearchBar'
 export default function App() {
 
   return (
-    <>
-s      {/* Code */}
-      <SearchBar></SearchBar>
-    </>
-  )
+    <div className="App">
+      <div className="search_bar_container"></div>
+      {/* Code */}
+      <SearchBar/>
+    </div>
+  );
 }
