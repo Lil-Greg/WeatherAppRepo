@@ -1,10 +1,8 @@
 import { Outlet } from "react-router-dom"
 
-export default function Navbar(){
-    return(
+export default function NavbarComp() {
+    return (
         <>
-            
-            
             <Outlet></Outlet>
         </>
     )

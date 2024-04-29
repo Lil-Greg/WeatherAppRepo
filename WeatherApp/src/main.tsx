@@ -2,13 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import Navbar from './components/Navbar.tsx'
+import NavbarComp from './components/NavbarComp.tsx'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 const router = createBrowserRouter([{
   path: '/',
-  element: <Navbar></Navbar>,
-  children:[
+  element: <NavbarComp></NavbarComp>,
+  children: [
     {
       path: '/',
       element: <App></App>
