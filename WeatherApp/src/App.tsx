@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import getImageURL from './utilities/image-util.ts';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWater, faWind, faTemperatureHalf } from '@fortawesome/free-solid-svg-icons'
 
 interface Weather {
   id: number,
@@ -41,87 +43,6 @@ export default function App() {
       setError('Failed to fetch weather data. Please try again.'); // Set error message
     }
   };
-  // function filterImage() {
-  //   switch (weather) {
-  //     case 'thunderstorm with light rain':
-  //       return getImageURL('thunderstorm.png');
-  //       break;
-  //     case 'thunderstorm with rain':
-  //       return getImageURL('thunderstorm.png')
-  //       break;
-  //     case 'thunderstorm with heavy rain':
-  //       return getImageURL('thunderstorm.png');
-  //       break;
-  //     case 'light thunderstorm':
-  //       return getImageURL('thunderstorm.png')
-  //       break;
-  //     case 'heavy thunderstorm':
-  //       return getImageURL('thunderstorm.png');
-  //       break;
-  //     case 'ragged thunderstorm':
-  //       return getImageURL('thunderstorm.png')
-  //       break;
-  //     case 'thunderstorm with light drizzle':
-  //       return getImageURL('thunderstorm.png')
-  //       break;
-  //     case 'thunderstorm with drizzle':
-  //       return getImageURL('thunderstorm.png')
-  //       break;
-  //     case 'thunderstorm with heavy drizzle':
-  //       return getImageURL('thunderstorm.png')
-  //       break;
-
-  //     case 'light intensity drizzle':
-  //       return getImageURL('shower rain.png')
-  //       break;
-  //     case 'drizzle':
-  //       return getImageURL('shower rain.png')
-  //       break;
-  //     case 'heavy intensity drizzle':
-  //       return getImageURL('shower rain.png')
-  //       break;
-  //     case 'light intensity drizzle rain':
-  //       return getImageURL('shower rain.png')
-  //       break;
-  //     case 'drizzle rain':
-  //       return getImageURL('shower rain.png')
-  //       break;
-  //     case 'heavy intensity drizzle rain':
-  //       return getImageURL('shower rain.png')
-  //       break;
-  //     case 'shower rain and drizzle':
-  //       return getImageURL('shower rain.png')
-  //       break;
-  //     case 'heavy shower rain and drizzle':
-  //       return getImageURL('shower rain.png')
-  //       break;
-  //     case 'shower drizzle':
-  //       return getImageURL('shower rain.png')
-  //       break;
-
-  //     case 'light rain':
-  //       return getImageURL('rain.png')
-  //       break;
-  //     case 'moderate rain':
-  //       return getImageURL('rain.png')
-  //       break;
-  //     case 'heavy intensity rain':
-  //       return getImageURL('rain.png')
-  //       break;
-  //     case 'very heavy rain':
-  //       return getImageURL('rain.png')
-  //       break;
-  //     case 'extreme rain':
-  //       return getImageURL('rain.png')
-  //       break;
-  //     case 'freezing rain':
-  //       return getImageURL('snow.png')
-  //       break;
-  //     case 'light intensity rain':
-  //       return getImageURL('shower rain.png')
-  //       break;
-  //   }
-  // }
 
   return (
     <>
@@ -135,7 +56,7 @@ export default function App() {
 
         {/* Render error message if error state is not null */}
         {error && (
-          <div className="error-message">
+          <div className="error-message fadeIn">
             <img src={getImageURL('404.png')} alt="Not Found" />
             <p>{error}</p>
             <p>{cityRef.current?.value} Does Not Exist</p>
@@ -144,15 +65,28 @@ export default function App() {
 
         {/* Render weather information if weather state is not null and error state is null */}
         {data && weather && !error && (
-          <div>
+          <>
             <h2>Weather Information</h2>
-            {/* Making sure to get the same image no matter day or night */}
-            <img src={getImageURL(`${weather.icon.slice(0, 2)}d.png`)} alt={weather.main} />
-            <p>{weather.description}</p>
-            <p>City: {data.name}</p>
-            <p>Temperature: {Math.floor(data.main.temp)}°C</p>
-            {/* Add more weather details as needed */}
-          </div>
+            <div className='weather-box fadeIn'>
+              {/* Making sure to get the same image no matter day or night */}
+              <img src={getImageURL(`${weather.icon.slice(0, 2)}d.png`)} alt={weather.main} />
+              <p className='description'>{weather.description}</p>
+              <p className='description city'>City: {data.name}</p>
+
+              <p className='temperature'><FontAwesomeIcon icon={faTemperatureHalf} /> Temperature: {Math.floor(data.main.temp)}°C</p>
+            </div>
+            <div className="weather-details fadeIn">
+              <div className="humidity">
+                <FontAwesomeIcon className='icon' icon={faWater} />
+                <p><span className="default">Humidity: </span>{data.main.humidity}</p>
+              </div>
+              <div className="wind">
+                <FontAwesomeIcon className='icon' icon={faWind} />
+                <p><span className="default">Wind Speed: </span>{data.wind.speed}</p>
+              </div>
+            </div>
+          </>
+
         )}
       </div>
 
