@@ -1,11 +1,20 @@
 import React, { useState, useRef } from 'react';
 import { FaSearch } from 'react-icons/fa';
+import getImageURL from './utilities/image-util.ts';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWater, faWind, faTemperatureHalf } from '@fortawesome/free-solid-svg-icons'
 
+interface Weather {
+  id: number,
+  main: string,
+  description: string,
+  icon: string
+}
 export default function App() {
   const APIKey = import.meta.env.VITE_API_KEY;
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null); // State to track errors
-  const [weather, setWeather] = useState<string | null>(null);
+  const [weather, setWeather] = useState<Weather | null>(null);
   const cityRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -24,7 +33,7 @@ export default function App() {
       }
       const data = await response.json();
       setData(data);
-      setWeather(data.weather[0].description)
+      setWeather(data.weather[0])
       setError(null); // Reset error state if successful response
       console.log(weather, data) // Testing App
     } catch (error) {
@@ -45,30 +54,39 @@ export default function App() {
           </div>
         </form>
 
-        {/* Render weather img if not null*/}
-        {weather && (
-          <div>
-            {/* Images are not working for some reason :/ */}
-            <img src={`./assets/${weather}.png`} alt={weather} />
-            <p>{weather}</p>
-          </div>
-        )}
-
         {/* Render error message if error state is not null */}
         {error && (
-          <div className="error-message">
+          <div className="error-message fadeIn">
+            <img src={getImageURL('404.png')} alt="Not Found" />
             <p>{error}</p>
+            <p>{cityRef.current?.value} Does Not Exist</p>
           </div>
         )}
 
         {/* Render weather information if weather state is not null and error state is null */}
-        {data && !error && (
-          <div>
+        {data && weather && !error && (
+          <>
             <h2>Weather Information</h2>
-            <p>City: {data.name}</p>
-            <p>Temperature: {Math.floor(data.main.temp)}°C</p>
-            {/* Add more weather details as needed */}
-          </div>
+            <div className='weather-box fadeIn'>
+              {/* Making sure to get the same image no matter day or night */}
+              <img src={getImageURL(`${weather.icon.slice(0, 2)}d.png`)} alt={weather.main} />
+              <p className='description'>{weather.description}</p>
+              <p className='description city'>City: {data.name}</p>
+
+              <p className='temperature'><FontAwesomeIcon icon={faTemperatureHalf} /> Temperature: {Math.floor(data.main.temp)}°C</p>
+            </div>
+            <div className="weather-details fadeIn">
+              <div className="humidity">
+                <FontAwesomeIcon className='icon' icon={faWater} />
+                <p><span className="default">Humidity: </span>{data.main.humidity}</p>
+              </div>
+              <div className="wind">
+                <FontAwesomeIcon className='icon' icon={faWind} />
+                <p><span className="default">Wind Speed: </span>{data.wind.speed}</p>
+              </div>
+            </div>
+          </>
+
         )}
       </div>
 
