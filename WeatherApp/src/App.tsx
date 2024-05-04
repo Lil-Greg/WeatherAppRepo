@@ -35,7 +35,7 @@ export default function App() {
       setData(data);
       setWeather(data.weather[0])
       setError(null); // Reset error state if successful response
-      console.log(weather, data) // Testing App
+      // console.log(weather, data) // Testing App
     } catch (error) {
       console.error('Error fetching weather data:', error);
       setData(null);
